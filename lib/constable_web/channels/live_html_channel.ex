@@ -10,7 +10,8 @@ defmodule ConstableWeb.LiveHtmlChannel do
   def handle_out("new-comment", %{comment: comment}, socket) do
     payload = %{
       announcement_id: comment.announcement_id,
-      comment_html: render_comment_html(comment, socket.assigns[:current_user])
+      comment_html: render_comment_html(comment, socket.assigns[:current_user]),
+      subscribe: comment.user_id == socket.assigns[:current_user].id
     }
     push socket, "new-comment", payload
 

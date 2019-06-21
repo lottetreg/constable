@@ -16,9 +16,16 @@ channel
   });
 
 channel.on('new-comment', payload => {
-  $(
-    `[data-announcement-id='${payload.announcement_id}'] .comments-list`
-  ).append(payload.comment_html);
+  $(`[data-announcement-id='${payload.announcement_id}'] .comments-list`)
+    .append(payload.comment_html);
+
+  if (payload.subscribe === true) {
+    const toggleSubscription = $('.subscribe-to');
+    toggleSubscription.html('&nbsp;Subscribed to thread');
+    toggleSubscription.attr('data-method', 'delete');
+    toggleSubscription.addClass('unsubscribe-to unsubscribe-to-thread');
+    toggleSubscription.removeClass('subscribe-to');
+  }
 });
 
 const resetForm = form => form.reset();

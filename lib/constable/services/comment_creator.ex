@@ -17,9 +17,15 @@ defmodule Constable.Services.CommentCreator do
         broadcast(comment)
         mentioned_users = email_mentioned_users(comment)
         email_subscribers(comment, mentioned_users)
+        subscribe_comment_author(comment)
         {:ok, comment}
       {:error, changeset} -> {:error, changeset}
     end
+  end
+
+  defp subscribe_comment_author(comment) do
+    subscribe_user(comment.announcement_id, comment.user_id)
+    comment
   end
 
   defp email_subscribers(comment, mentioned_users) do
@@ -58,5 +64,18 @@ defmodule Constable.Services.CommentCreator do
         comment: comment,
       }
     )
+  end
+
+  defp subscribe_user(announcement_id, comment_user_id) do
+    params = %{
+      user_id: comment_user_id,
+      announcement_id: announcement_id
+    }
+
+    Repo.get_by(Subscription, params) || insert_subscription(params)
+  end
+
+  defp insert_subscription(params) do
+    Subscription.changeset(params)|> Repo.insert!
   end
 end
