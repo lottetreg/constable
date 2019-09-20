@@ -1,8 +1,8 @@
-const refreshMarkdownPreview = function(inputSelector) {
+const refreshMarkdownPreview = (inputSelector) => {
   $(inputSelector).trigger('input');
 };
 
-export function setupImageUploader(selector) {
+export const setupImageUploader = (selector) => {
   const shuboxOptions = {
     textBehavior: 'append',
     clickable: false,
@@ -15,4 +15,4 @@ export function setupImageUploader(selector) {
   if (typeof(Shubox) !== 'undefined') {
     new Shubox(selector, shuboxOptions);
   }
-}
+};

@@ -4,7 +4,7 @@ import css from '../css/app.scss';
 import 'phoenix_html';
 
 // Basic AJAX Helper
-import './remote-append';
+import './lib/remote-append';
 
 // Bring in jQuery for other modules that rely on it
 import $ from 'jquery';
@@ -20,10 +20,18 @@ import LocalTime from 'local-time';
 LocalTime.start();
 
 // Make the modules available to html pages
-global.constable = global.constable || {};
-global.constable.commentForm = require('./comment-form');
-global.constable.syntaxHighlighting = require('./syntax-highlighting');
-global.constable.announcementForm = require('./announcement-form');
-global.constable.announcementFormMobile = require('./announcement-form-mobile');
-global.constable.textareaImageUploader = require('./textarea-image-uploader');
-global.constable.userAutocomplete = require('./user-autocomplete');
+import * as commentForm from './components/comment-form';
+import * as syntaxHighlighting from './lib/syntax-highlighting';
+import * as announcementForm from './components/announcement-form';
+import * as announcementFormMobile from './components/announcement-form-mobile';
+import * as textareaImageUploader from './lib/textarea-image-uploader';
+import * as userAutocomplete from './components/user-autocomplete';
+
+global.constable = global.constable || {
+  commentForm,
+  syntaxHighlighting,
+  announcementForm,
+  announcementFormMobile,
+  textareaImageUploader,
+  userAutocomplete,
+};

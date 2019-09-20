@@ -1,51 +1,49 @@
 import Mousetrap from 'mousetrap';
-import { setupImageUploader } from './textarea-image-uploader';
+import socket from '../socket';
+import { setupImageUploader } from '../lib/textarea-image-uploader';
 import { autocompleteUsers } from './user-autocomplete';
-
-import socket from './socket';
 
 const channel = socket.channel('live-html', {});
 
 channel
   .join()
-  .receive('ok', function(resp) {
+  .receive('ok', (resp) => {
     console.log('Joined successfully', resp);
   })
-  .receive('error', function(resp) {
+  .receive('error', (resp) => {
     console.log('Unable to join', resp);
   });
 
-channel.on('new-comment', payload => {
+channel.on('new-comment', (payload) => {
   $(
     `[data-announcement-id='${payload.announcement_id}'] .comments-list`
   ).append(payload.comment_html);
 });
 
-const resetForm = form => form.reset();
-const disableForm = form =>
-  form.children(':input').attr('disabled', 'disabled');
-const enableForm = form => form.children(':input').removeAttr('disabled');
+const resetForm = (form) => form.reset();
+const disableForm = (form) => form.children(':input').attr('disabled', 'disabled');
+const enableForm = (form) => form.children(':input').removeAttr('disabled');
 
 const SAVE_SHORTCUT = [ 'mod+enter' ];
 
-const initializeForm = function(usersForAutoComplete) {
+const initializeForm = (usersForAutoComplete) => {
   setupImageUploader('#comment_body');
   autocompleteUsers('.comment-textarea', usersForAutoComplete);
 
-  Mousetrap.bind(SAVE_SHORTCUT, function() {
+  Mousetrap.bind(SAVE_SHORTCUT, () => {
     const $form = $('.comment-form');
     $form.submit();
   });
 };
 
-export function setupEditForm(usersForAutoComplete) {
+export const setupEditForm = (usersForAutoComplete) => {
   initializeForm(usersForAutoComplete);
-}
+};
 
-export function setupNewForm(usersForAutoComplete) {
+export const setupNewForm = (usersForAutoComplete) => {
   initializeForm(usersForAutoComplete);
 
-  $('.comment-form').on('submit', function submitForm(event) {
+  $('.comment-form').on('submit', function(event) {
     event.preventDefault();
     const form = $(this);
 
@@ -59,4 +57,4 @@ export function setupNewForm(usersForAutoComplete) {
       enableForm(form);
     });
   });
-}
+};
