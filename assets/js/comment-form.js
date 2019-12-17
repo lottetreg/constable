@@ -20,7 +20,7 @@ channel.on('new-comment', payload => {
     .append(payload.comment_html);
 
   if (payload.subscribe === true) {
-    const toggleSubscription = $('.subscribe-to');
+    const toggleSubscription = $('.subscription > a');
     toggleSubscription.html('&nbsp;Subscribed to thread');
     toggleSubscription.attr('data-method', 'delete');
     toggleSubscription.addClass('unsubscribe-to unsubscribe-to-thread');
