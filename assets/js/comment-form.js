@@ -23,8 +23,6 @@ channel.on('new-comment', payload => {
     const toggleSubscription = $('.subscription > a');
     toggleSubscription.html('&nbsp;Subscribed to thread');
     toggleSubscription.attr('data-method', 'delete');
-    toggleSubscription.addClass('unsubscribe-to unsubscribe-to-thread');
-    toggleSubscription.removeClass('subscribe-to');
   }
 });
 
