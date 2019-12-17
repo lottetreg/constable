@@ -72,10 +72,8 @@ defmodule Constable.Services.CommentCreator do
       announcement_id: announcement_id
     }
 
-    Repo.get_by(Subscription, params) || insert_subscription(params)
-  end
-
-  defp insert_subscription(params) do
-    Subscription.changeset(params)|> Repo.insert!
+    params
+    |> Subscription.changeset()
+    |> Repo.insert!(on_conflict: :nothing)
   end
 end
